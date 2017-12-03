@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.12.2">
+  <actions/>
+  <description>git clone -b &quot;${branch}&quot; https://github.com/docker/labs.git&#xd;
+cd beginner/flask-app/&#xd;
+docker build -t &quot;${image_name}:${tag}&quot; .&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>branch</name>
+          <description>Branch name of docker/labs.git</description>
+          <defaultValue>master</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>image_name</name>
+          <description>Image name</description>
+          <defaultValue>flask-app</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>image_tag</name>
+          <description>Image tag</description>
+          <defaultValue>latest</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.42">
+    <script>node {
+    stage(&apos;Clone git repository&apos;) {
+        git url: &apos;https://github.com/docker/labs.git&apos;, branch: params[&apos;branch&apos;]
+    }
+    stage(&apos;Build docker image&apos;) {
+        sh &quot;cd beginner/flask-app/ &amp;&amp; docker build -t ${params.image_name}:${params.image_tag} .&quot;
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

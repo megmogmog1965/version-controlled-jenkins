@@ -1,0 +1,14 @@
+
+*~
+\#*\#
+.DS_STORE
+.DS_Store
+
+# manage: "jenkins_home/jobs/{job-name}/config.xml"
+!jenkins_home/
+jenkins_home/*
+!jenkins_home/jobs/
+jenkins_home/jobs/*
+!jenkins_home/jobs/*/
+jenkins_home/jobs/*/*
+!jenkins_home/jobs/*/config.xml
